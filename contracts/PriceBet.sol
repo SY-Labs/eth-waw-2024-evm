@@ -25,9 +25,8 @@ contract PriceBet is MainDemoConsumerBase{
     function validateTimestamp(uint256 receivedTimestampMilliseconds) public view virtual override { }
 
     function finalize() external {
-        // require(block.timestamp > end, "In progress");
-        // require(block.timestamp < (end + endLimit), "Passed the limit");
         require(outcome == 0, "Already finalized");
+        require(end == extractTimestampsAndAssertAllAreEqual(), "Invalid timestamp");
 
         uint256 answer = getOracleNumericValueFromTxMsg(symbol);
         if(answer >= expected) {
