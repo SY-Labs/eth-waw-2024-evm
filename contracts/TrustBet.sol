@@ -2,18 +2,10 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Bet.sol";
 
-contract TrustBet is Ownable {
-    int256 public outcome = 0;
-    uint256 public end;
-    uint256 public endLimit;
-    mapping (address => int8) public bets;
-    mapping (address => uint256) public stakes;
-    mapping (address => bool) public claims;
-    uint256 public yesPool;
-    uint256 public noPool;
-
-    constructor(uint256 _end) Ownable(msg.sender) {
+contract TrustBet is Ownable, Bet {
+    constructor(uint256 _end) {
         end = _end;
     }
 

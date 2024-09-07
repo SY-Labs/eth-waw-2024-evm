@@ -1,12 +1,17 @@
 {
 	"compiler": {
-		"version": "0.8.26+commit.8a97fa7a"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
 		"abi": [
 			{
 				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_symbol",
+						"type": "bytes32"
+					},
 					{
 						"internalType": "uint256",
 						"name": "_expected",
@@ -125,6 +130,25 @@
 				"type": "error"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256[]",
@@ -183,6 +207,19 @@
 						"internalType": "bool",
 						"name": "",
 						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "clock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -268,6 +305,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "getClock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "getDataServiceId",
 				"outputs": [
 					{
@@ -319,6 +369,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -351,6 +414,26 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"name": "setClock",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -367,6 +450,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -420,6 +516,15 @@
 						"_0": "The minimum required value of unique authorised signers"
 					}
 				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				},
 				"validateTimestamp(uint256)": {
 					"details": "This function may be overridden by the child consumer contract. It should validate the timestamp against the current time (block.timestamp) It should revert with a helpful message if the timestamp is not valid",
 					"params": {
@@ -439,7 +544,7 @@
 		"compilationTarget": {
 			"contracts/PriceBet.sol": "PriceBet"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -451,6 +556,22 @@
 		"remappings": []
 	},
 	"sources": {
+		"@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0xba43b97fba0d32eb4254f6a5a297b39a19a247082a02d6e69349e071e2946218",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://fc980984badf3984b6303b377711220e067722bbd6a135b24669ff5069ef9f32",
+				"dweb:/ipfs/QmPHXMSXj99XjSVM21YsY6aNtLLjLVXDbyN76J5HQYvvrz"
+			]
+		},
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0xa92e4fa126feb6907daa0513ddd816b2eb91f30a808de54f63c17d0e162c3439",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a367861093b74443b137564d3f3c472f70bcf114739e62059c939f25e315706c",
+				"dweb:/ipfs/Qmd7JMpcxD9RuQjK3uM3EzJUgSqdN8vzp8eytEiuwxQJ6h"
+			]
+		},
 		"@redstone-finance/evm-connector/contracts/core/CalldataExtractor.sol": {
 			"keccak256": "0x059e911a27b1ac2d42930f198130381d688353b7b04fdad829558b532c148f96",
 			"license": "BUSL-1.1",
@@ -523,11 +644,20 @@
 				"dweb:/ipfs/QmT3wt6FhAf7PFDZ1Z2mNx1671Yudz7UCjqnoFkEKCgt92"
 			]
 		},
-		"contracts/PriceBet.sol": {
-			"keccak256": "0xfe5d678a4ef39e288d5cf319c4ccd5e7a0a93f720bc5371e9309ec3ddcc9e0e2",
+		"contracts/Bet.sol": {
+			"keccak256": "0xda81076ede152ccd4a8f9b4ad99cca88e0e67ac79fde851aeff254b9a43062a6",
+			"license": "MIT",
 			"urls": [
-				"bzz-raw://4d2926473906ded2e7437a16a7961d6979fdb145f9b7cb0f7ce3be4d752cc0bb",
-				"dweb:/ipfs/QmeFpfUEr6FmXyB7gmhAWQaZkkQtErdE2LvaGNT9zsvCsh"
+				"bzz-raw://3c865f04021d683d81a32cccf013c4d3a597820bde8c9b8da77ec9d4b9c34b2c",
+				"dweb:/ipfs/QmZvp3HWJLNkX29eG9LTxiA5StNALhazeT9NX82ynNvCPL"
+			]
+		},
+		"contracts/PriceBet.sol": {
+			"keccak256": "0x935a9b81708e24fb5cd7065bbd455606eb4f0dc927f0e948d23d03dc5cc7940b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://00baefdd8a57cca90e677cb4110b3efb3de37b64e358c0bcaa8ddb45c1c1d3e4",
+				"dweb:/ipfs/QmbbmTFZ4V57jkn7ZMxq9aBGxLLyYG5Nvs9Sv5iobVGUuB"
 			]
 		}
 	},
