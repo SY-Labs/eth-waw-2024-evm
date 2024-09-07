@@ -7,27 +7,13 @@ import "./Bet.sol";
 contract PriceBet is MainDemoConsumerBase, Bet {
     bytes32 symbol;
     uint256 public expected;
-<<<<<<< Updated upstream
-    uint256 public endLimit;
-=======
-<<<<<<< Updated upstream
-    int256 public outcome = 0;
-    uint256 public end;
-    uint256 public endLimit;
-    mapping (address => int8) public bets;
-    mapping (address => uint256) public stakes;
-    mapping (address => bool) public claims;
-    uint256 public yesPool;
-    uint256 public noPool;
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 
     constructor(
         bytes32 _symbol,
         uint256 _expected,
-        uint256 _end
-    ) {
+        uint256 _end,
+        address stakingAddress
+    ) Bet(stakingAddress) {
         symbol = _symbol;
         expected = _expected;
         end = _end;
@@ -38,6 +24,7 @@ contract PriceBet is MainDemoConsumerBase, Bet {
     function finalize() external {
         require(outcome == 0, "Already finalized");
         require(end == extractTimestampsAndAssertAllAreEqual(), "Invalid timestamp");
+        stakePool = IStaking(stakingAddress).unstakeEth();
 
         uint256 answer = getOracleNumericValueFromTxMsg(symbol);
         if(answer >= expected) {

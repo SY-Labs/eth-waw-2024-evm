@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./MockStakingETH.sol";
 
 abstract contract Bet is Ownable {
     int256 public outcome = 0;
@@ -11,8 +12,14 @@ abstract contract Bet is Ownable {
     mapping (address => bool) public claims;
     uint256 public yesPool;
     uint256 public noPool;
+    uint256 public stakePool;
+    address public stakingAddress;
     // Clock control for hackathon
     uint256 public clock;
+
+    constructor(address _stakingAddress) {
+        stakingAddress = _stakingAddress;
+    }
 
     function placeBet(bool _outcome) public payable {
         require(msg.value != 0, "No value im bet");
@@ -27,6 +34,7 @@ abstract contract Bet is Ownable {
             noPool += msg.value;
         }
         stakes[msg.sender] += msg.value;
+        IStaking(stakingAddress).stakeEth{value: msg.value}();
     }
 
     function claim() public {
@@ -35,9 +43,9 @@ abstract contract Bet is Ownable {
         require(claims[msg.sender] == false, "Already claimed");
 
         uint256 stake = stakes[msg.sender];
-        payable (msg.sender).transfer(payout(stake));
         payable (msg.sender).transfer(stake);
-
+        payable (msg.sender).transfer(payout(stake));
+        
         claims[msg.sender] = true;
     }
 
@@ -45,9 +53,9 @@ abstract contract Bet is Ownable {
         uint256 factor = 100000000;
         uint256 winningPool = outcome == 1 ? yesPool : noPool;
         require(bet <= winningPool, "Bet bigger than winning pool");
-        uint256 losingPool = outcome == -1 ? noPool : yesPool;
+        uint256 losingPool = outcome == -1 ? yesPool : noPool;
         uint256 share = bet * factor / winningPool;
-        return share * losingPool / factor;
+        return(share * losingPool / factor) + (share * stakePool / factor);
     }
 
     function setClock(uint256 timestamp) public onlyOwner {
@@ -58,7 +66,9 @@ abstract contract Bet is Ownable {
         if(clock == 0) {
             return block.timestamp;
         } else {
-        return clock;
+            return clock;
         }
     }
+
+    receive() external payable {}
 }
