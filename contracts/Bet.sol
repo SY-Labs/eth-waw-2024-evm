@@ -17,7 +17,7 @@ abstract contract Bet is Ownable {
     function placeBet(bool _outcome) public payable {
         require(msg.value != 0, "No value im bet");
         require(bets[msg.sender] == 0, "Bet already placed");
-        require(block.timestamp < end, "Passed the limit");
+        require(getClock() < end, "Passed the limit");
 
         if(_outcome) {
             bets[msg.sender] = 1;
@@ -55,6 +55,10 @@ abstract contract Bet is Ownable {
     }
 
     function getClock() public view returns(uint256) {
+        if(clock == 0) {
+            return block.timestamp;
+        } else {
         return clock;
+        }
     }
 }

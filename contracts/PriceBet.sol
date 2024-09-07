@@ -7,7 +7,21 @@ import "./Bet.sol";
 contract PriceBet is MainDemoConsumerBase, Bet {
     bytes32 symbol;
     uint256 public expected;
+<<<<<<< Updated upstream
     uint256 public endLimit;
+=======
+<<<<<<< Updated upstream
+    int256 public outcome = 0;
+    uint256 public end;
+    uint256 public endLimit;
+    mapping (address => int8) public bets;
+    mapping (address => uint256) public stakes;
+    mapping (address => bool) public claims;
+    uint256 public yesPool;
+    uint256 public noPool;
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
     constructor(
         bytes32 _symbol,
