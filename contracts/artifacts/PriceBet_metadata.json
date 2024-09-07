@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.26+commit.8a97fa7a"
+		"version": "0.8.19+commit.7dd6d404"
 	},
 	"language": "Solidity",
 	"output": {
@@ -8,14 +8,14 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "_redstoneOracle",
-						"type": "address"
+						"internalType": "bytes32",
+						"name": "_symbol",
+						"type": "bytes32"
 					},
 					{
-						"internalType": "int256",
+						"internalType": "uint256",
 						"name": "_expected",
-						"type": "int256"
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
@@ -25,6 +25,147 @@
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "CalldataMustHaveValidPayload",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "CalldataOverOrUnderFlow",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "CanNotPickMedianOfEmptyArray",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "DataPackageTimestampMustNotBeZero",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "DataPackageTimestampsMustBeEqual",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "DataTimestampCannotBeZero",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "EachSignerMustProvideTheSameValue",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "EmptyCalldataPointersArr",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "GetDataServiceIdNotImplemented",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "IncorrectUnsignedMetadataSize",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "receivedSignersCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "requiredSignersCount",
+						"type": "uint256"
+					}
+				],
+				"name": "InsufficientNumberOfUniqueSigners",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidCalldataPointer",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "RedstonePayloadMustHaveAtLeastOneDataPackage",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "receivedSigner",
+						"type": "address"
+					}
+				],
+				"name": "SignerNotAuthorised",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "TimestampsMustBeEqual",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "valueByteSize",
+						"type": "uint256"
+					}
+				],
+				"name": "TooLargeValueByteSize",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "values",
+						"type": "uint256[]"
+					}
+				],
+				"name": "aggregateValues",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -73,6 +214,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "clock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "end",
 				"outputs": [
 					{
@@ -102,9 +256,9 @@
 				"name": "expected",
 				"outputs": [
 					{
-						"internalType": "int256",
+						"internalType": "uint256",
 						"name": "",
-						"type": "int256"
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -112,9 +266,80 @@
 			},
 			{
 				"inputs": [],
+				"name": "extractTimestampsAndAssertAllAreEqual",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "extractedTimestamp",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "finalize",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "signerAddress",
+						"type": "address"
+					}
+				],
+				"name": "getAuthorisedSignerIndex",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getClock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getDataServiceId",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getUniqueSignersThreshold",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -138,6 +363,19 @@
 						"internalType": "int256",
 						"name": "",
 						"type": "int256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -177,15 +415,22 @@
 			},
 			{
 				"inputs": [],
-				"name": "redstoneOracle",
-				"outputs": [
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
 					{
-						"internalType": "contract AggregatorV3Interface",
-						"name": "",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
 					}
 				],
-				"stateMutability": "view",
+				"name": "setClock",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -208,6 +453,32 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "receivedTimestampMilliseconds",
+						"type": "uint256"
+					}
+				],
+				"name": "validateTimestamp",
+				"outputs": [],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "yesPool",
 				"outputs": [
@@ -223,7 +494,44 @@
 		],
 		"devdoc": {
 			"kind": "dev",
-			"methods": {},
+			"methods": {
+				"aggregateValues(uint256[])": {
+					"details": "This function may be overridden by the child consumer contract. It should aggregate values from different signers to a single uint value. By default, it calculates the median value",
+					"params": {
+						"values": "An array of uint256 values from different signers"
+					},
+					"returns": {
+						"_0": "Result of the aggregation in the form of a single number"
+					}
+				},
+				"getDataServiceId()": {
+					"details": "This function must be implemented by the child consumer contract. It should return dataServiceId which DataServiceWrapper will use if not provided explicitly . If not overridden, value will always have to be provided explicitly in DataServiceWrapper.",
+					"returns": {
+						"_0": "dataServiceId being consumed by contract"
+					}
+				},
+				"getUniqueSignersThreshold()": {
+					"details": "This function should be overridden by the child consumer contract.",
+					"returns": {
+						"_0": "The minimum required value of unique authorised signers"
+					}
+				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				},
+				"validateTimestamp(uint256)": {
+					"details": "This function may be overridden by the child consumer contract. It should validate the timestamp against the current time (block.timestamp) It should revert with a helpful message if the timestamp is not valid",
+					"params": {
+						"receivedTimestampMilliseconds": "Timestamp extracted from calldata"
+					}
+				}
+			},
 			"version": 1
 		},
 		"userdoc": {
@@ -236,7 +544,7 @@
 		"compilationTarget": {
 			"contracts/PriceBet.sol": "PriceBet"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -248,19 +556,108 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts/AggregatorV3Interface.sol": {
-			"keccak256": "0x463cce740bfbef911d7ef3f0e093906db16090cfc9ac5bc33e66e8fe81b57090",
+		"@openzeppelin/contracts/access/Ownable.sol": {
+			"keccak256": "0xba43b97fba0d32eb4254f6a5a297b39a19a247082a02d6e69349e071e2946218",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b185272bd2664f76a12ac614da835e3e7aef9d4a29979a9412fa637987ef2468",
-				"dweb:/ipfs/QmSKuUkegk3XEJBYaXf3HXjh9eSP79kPYVNyV5ScLA9knY"
+				"bzz-raw://fc980984badf3984b6303b377711220e067722bbd6a135b24669ff5069ef9f32",
+				"dweb:/ipfs/QmPHXMSXj99XjSVM21YsY6aNtLLjLVXDbyN76J5HQYvvrz"
+			]
+		},
+		"@openzeppelin/contracts/utils/Context.sol": {
+			"keccak256": "0xa92e4fa126feb6907daa0513ddd816b2eb91f30a808de54f63c17d0e162c3439",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a367861093b74443b137564d3f3c472f70bcf114739e62059c939f25e315706c",
+				"dweb:/ipfs/Qmd7JMpcxD9RuQjK3uM3EzJUgSqdN8vzp8eytEiuwxQJ6h"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/core/CalldataExtractor.sol": {
+			"keccak256": "0x059e911a27b1ac2d42930f198130381d688353b7b04fdad829558b532c148f96",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://6c9723f60b76093cb4cb35c30f2f5c1ef223bd12a1e9777746c4b89d4fc0a2d2",
+				"dweb:/ipfs/Qmck7vZV3XGwfEjCg6cq92d8ZL4P9zxG4xs9i9cYH9cfTZ"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/core/RedstoneConstants.sol": {
+			"keccak256": "0x9654f99c87541c1050906fee7c1c1243fcbf21acd2aaa59c6b5f3e778526e735",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://7b43042c52c14a4fb98c64530105d301ecfc66ffea88ece99b2daa752bf0f44a",
+				"dweb:/ipfs/QmV7CRYHrnuQZ6DDHP2PS3GytfogF6iSmnhcNjokMvw46z"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/core/RedstoneConsumerBase.sol": {
+			"keccak256": "0x8da7218c8cd345bbb65bcc1a13a31c397bceaa10854aa2b439f188ab3e392ff7",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://c31ffd0ae5d43de18fecfdb6d4c3417aa8cab3d8775a650df761bf760536b7f0",
+				"dweb:/ipfs/QmUW9KxdnJrYqEneCXwqhGtQQq7vBryiNRDgqqkWo4dXk3"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/core/RedstoneConsumerNumericBase.sol": {
+			"keccak256": "0x4094dfbc4d9169aebbc8585e4b6a1dd857a012c8a988612d768f78b7684f73fb",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://6036a58261785661a4fdadfbecec4db23d3ffed631311ef4ef89a32ba1049a93",
+				"dweb:/ipfs/QmaPq2pqS5neNxmaN2crQER8kmbNj4xZgoeYPCdBi2NmQF"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/core/RedstoneDefaultsLib.sol": {
+			"keccak256": "0xe39ee1618d15944d6f44918f02f71d0d604fb678dbdbf36ca1eeecc86858ff25",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://2bcb45b6abee6ba18742a9e4374afc04f4be16de11d154ca846e96a37f3b6e73",
+				"dweb:/ipfs/QmYUqJyfdj7YwvGthGKxzryC2mGQGTGZy7SYZZt7m7w3oo"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/data-services/MainDemoConsumerBase.sol": {
+			"keccak256": "0x6654b1dfa48265518ff58ee5197a668d79736f282287dea3177bed6e8c92f125",
+			"license": "BUSL-1.1",
+			"urls": [
+				"bzz-raw://752eb00b89ee6c16eccf31191b17452b29f7a71111083b0dd7d32bada43c40b1",
+				"dweb:/ipfs/QmYiWbRntZ2imY9ectiAnTiJL5Ps1fah2L8kMXdpqBTqy8"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/libs/BitmapLib.sol": {
+			"keccak256": "0x9762198cae997eebad303a7a43a6133908646ed30811285085c9ea9cbd2a5e07",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://29f56e08f523a11d5f1ab083f5c613e7654a74613b2270f9e8860fa493bf2ceb",
+				"dweb:/ipfs/QmUpD9U3GV7ZpjFEVvqSXGYfvwkBdeV5CoTiH1EzH8woJa"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/libs/NumericArrayLib.sol": {
+			"keccak256": "0xfe091bc5f3422baa3706a0bb18d6e70225b25f8f23be3bd840a14d016777e3aa",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8cd22b9197218e007df371bf7549d2ff613b804026f35d2d03f2b4d8f64278eb",
+				"dweb:/ipfs/QmPUHES8MVmXFxaLXjwXRsos35MwzacvmSsZe8Ct4CUpPu"
+			]
+		},
+		"@redstone-finance/evm-connector/contracts/libs/SignatureLib.sol": {
+			"keccak256": "0x06037b440e5eab52d550718543c463da00ac7231f303a503178ad5191e154310",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7bfb27ed76efa93423e40c276d2caefeab957561946f808169511b87d127e4c4",
+				"dweb:/ipfs/QmT3wt6FhAf7PFDZ1Z2mNx1671Yudz7UCjqnoFkEKCgt92"
+			]
+		},
+		"contracts/Bet.sol": {
+			"keccak256": "0xda81076ede152ccd4a8f9b4ad99cca88e0e67ac79fde851aeff254b9a43062a6",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3c865f04021d683d81a32cccf013c4d3a597820bde8c9b8da77ec9d4b9c34b2c",
+				"dweb:/ipfs/QmZvp3HWJLNkX29eG9LTxiA5StNALhazeT9NX82ynNvCPL"
 			]
 		},
 		"contracts/PriceBet.sol": {
-			"keccak256": "0x6decf403da02a4a36c103389f256df6b9239d531e1018118d5e7665604b1bb94",
+			"keccak256": "0x935a9b81708e24fb5cd7065bbd455606eb4f0dc927f0e948d23d03dc5cc7940b",
+			"license": "MIT",
 			"urls": [
-				"bzz-raw://13fdfe44b048d6932b0fd812eb834f6ec10b9f4bddddb5a8bee6e3ea392a79d2",
-				"dweb:/ipfs/QmZwH1avrYbHnGpwWeVr2WRLsXACzhqLBx6G8kk11HTkPs"
+				"bzz-raw://00baefdd8a57cca90e677cb4110b3efb3de37b64e358c0bcaa8ddb45c1c1d3e4",
+				"dweb:/ipfs/QmbbmTFZ4V57jkn7ZMxq9aBGxLLyYG5Nvs9Sv5iobVGUuB"
 			]
 		}
 	},
